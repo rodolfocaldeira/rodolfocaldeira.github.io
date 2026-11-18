@@ -1,3 +1,0 @@
-[submodule "public/labs/expenses-calculator"]
-	path = public/labs/expenses-calculator
-	url = git@github.com:rodolfocaldeira/expenses-calculator.git
