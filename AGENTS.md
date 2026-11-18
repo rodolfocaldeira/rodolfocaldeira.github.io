@@ -36,9 +36,9 @@ of `main`, or a GitHub Actions workflow), and it goes live at
 - [x] Serve expenses calculator from its own repo at `/expenses-calculator/`; redirect `/labs/expenses-calculator/`
 - [x] Create `blog-redirect` repo so old `blog.rodolfocaldeira.com/*` links go to `/blog/*`
 - [x] Enforce HTTPS on every Pages site
-- [ ] Get the Pages certificate to cover `www.rodolfocaldeira.com` (`http://www.` redirects fine; `https://www.` errors)
-- [ ] Delete the stale `gh-pages` branch once happy (kept as a rollback)
-- [ ] Publish the CV from its own repo instead of static files in `public/cv/`
+- [x] ~~Get the Pages certificate to cover `www.rodolfocaldeira.com`~~ Won't fix: `http://www.` redirects fine and the apex works over HTTPS; only `https://www.` errors (see learnings)
+- [x] Delete the stale `gh-pages` branch (deleted 2026-11-18; its last commit was `a056eb5`, recoverable with `git push origin a056eb5:refs/heads/gh-pages` if the object is still on GitHub)
+- [x] ~~Publish the CV from its own repo~~ Decided against it: the CV stays as static files in `public/cv/`, with its source kept elsewhere (a private GitHub repo can't serve Pages on the Free plan)
 - [ ] Optional: move `expenses-calculator` from `gh-pages` to `main`, so it has a single branch
 
 ## Findings & learnings
@@ -52,8 +52,10 @@ of `main`, or a GitHub Actions workflow), and it goes live at
   triggered a new certificate within a few minutes.
 - **Clearing a custom domain through the API commits a "Delete CNAME" to the source branch**
   (legacy branch builds). Pull or rebase before pushing afterwards.
-- **GitHub reuses an existing valid certificate.** Removing and quickly re-adding the
-  domain doesn't force a new one.
+- **GitHub reuses an existing valid certificate.** Removing and re-adding the domain
+  doesn't force a new one, even after a 2-hour gap, so the apex-only certificate stayed.
+  Untried options: make `www` the canonical custom domain (the apex would then redirect to it),
+  or ask GitHub Support to re-issue the certificate.
 - **GitHub Pages can't send a real 301 from one domain to another.** `blog-redirect` uses a
   JavaScript redirect in `index.html` and `404.html`.
 - **With an Actions-based Pages source, the custom domain lives in repo settings.**
